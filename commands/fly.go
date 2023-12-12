@@ -343,7 +343,7 @@ func createMemoryDatabaseForFly(opt FlyOption, db *sql.DB) ([]Table, error) {
 
 				currentTableName = tableMetas[filepath].Name
 				fields := array.Map(createDBFieldsFromHeaders(headers, opt.UseColumnNumAsName), func(h DatabaseField, i int) string {
-					return h.Field
+					return "`" + h.Field + "`"
 				})
 
 				currentTableFields = append([]string{memoryTableIDField}, fields...)
@@ -407,7 +407,7 @@ func addTableMeta(db *sql.DB, filepath string, tableName string, hash string, cu
 	}
 
 	if _, err := db.Exec(
-		"INSERT INTO meta (id, filename, hash, name, columns, original_columns, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		"INSERT INTO meta (`id`, `filename`, `hash`, `name`, `columns`, `original_columns`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?)",
 		must.Must(queryMaxMetaID(db))+1,
 		filepath,
 		hash,

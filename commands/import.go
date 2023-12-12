@@ -246,7 +246,7 @@ func resolveFieldIndexs(header []string, fieldsMap map[string]string) map[string
 // buildSQLTemplate build sql template
 func buildSQLTemplate(table string, fieldIndexs map[string]int) (string, []string) {
 	fields := array.FromMapKeys(fieldIndexs)
-	return fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s)", table, strings.Join(fields, ", "), strings.Join(array.Repeat("?", len(fields)), ",")), fields
+	return fmt.Sprintf("INSERT INTO %s (`%s`) VALUES (%s)", table, strings.Join(fields, "`, `"), strings.Join(array.Repeat("?", len(fields)), ",")), fields
 }
 
 type Tx interface {
